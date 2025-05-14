@@ -53,6 +53,10 @@
     text-align: center;
 }
 
+.time-slot-card {
+    cursor: pointer;
+}
+
 .time-slot-card h4 {
     font-size: 1.25rem;
     font-weight: bold;
@@ -63,11 +67,17 @@
     padding-bottom: 0.5rem;
     width: max-content;
     display: inline-block;
-    border-bottom: 2px solid #64BC6E;
+    border-bottom: 2px solid #fff;
+}
+
+.time-slot-card:hover p {
+    border-color: #64BC6E;
 }
 
 .time-slot-days-inner {
     display: flex;
+    position: relative;
+    overflow: hidden;
 }
 
 .time-slot-day-1, .time-slot-day-2 {
@@ -76,9 +86,28 @@
     gap: 1rem;
     grid-template-columns: repeat(3, auto);
     text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.time-slot-day-1.hide {
+    position: absolute;
+    transform: translateX(100%);
 }
 
 .time-slot-day-2 {
     position: absolute;
-    display: none;
+    transform: translateX(100%);
+}
+
+.time-slot-day-2.active {
+    position: static;
+    transform: translateX(0);
+}
+
+.time-slot-card.active {
+    pointer-events: none;
+}
+
+.time-slot-card.active p {
+    border-bottom: 2px solid #64BC6E;
 }
