@@ -1,0 +1,84 @@
+.time-slot-wrapper {
+    margin: 2rem 0;
+}
+
+.time-slot-times {
+    display: grid;
+    grid-template-columns: repeat(3, auto);
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.time-slot-button {
+    border: 1px solid #D0D0D0;
+    color: #000;
+    text-align: center;
+    border-radius: 5px;
+    height: 45px;
+}
+
+.time-slot-button:hover {
+    border-color: #64BC6E;
+}
+
+.time-slot-button.selected {
+    color: #fff;
+    background-color: #64BC6E;
+}
+
+.time-slot-button.unavailable {
+    pointer-events: none;
+    text-decoration: line-through;
+    font-style: italic;
+    background-color: #ccc;
+}
+
+.time-slot-continue  {
+    display: flex;
+    justify-content: right;
+    align-items: center;
+    margin: 2rem 0;
+}
+
+.time-slot-continue a {
+    background-color: #0176C4;
+    color: #fff;
+    text-transform: uppercase;
+    width: 100px;
+    height: 50px;
+    line-height: 50px;
+    border-radius: 5px;
+    font-size: 1.75;
+    display: block;
+    text-align: center;
+}
+
+.time-slot-card h4 {
+    font-size: 1.25rem;
+    font-weight: bold;
+}
+
+.time-slot-card p {
+    margin-top: 1rem;
+    padding-bottom: 0.5rem;
+    width: max-content;
+    display: inline-block;
+    border-bottom: 2px solid #64BC6E;
+}
+
+.time-slot-days-inner {
+    display: flex;
+}
+
+.time-slot-day-1, .time-slot-day-2 {
+    width: 100%;
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(3, auto);
+    text-align: center;
+}
+
+.time-slot-day-2 {
+    position: absolute;
+    display: none;
+}

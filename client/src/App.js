@@ -17,9 +17,7 @@ function App() {
         <Routes>
           <Route path='/' element={<BookingForm/>}/>
           <Route path='/verify' element={<Verify/>}/>
-          <Route path='/time-slot' element={<TimeSlot/>}/>
           <Route path='/confirmation' />
-
         </Routes>
       
     </BrowserRouter>
