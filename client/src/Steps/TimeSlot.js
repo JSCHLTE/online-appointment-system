@@ -2,9 +2,10 @@ import React, { useEffect, useState } from 'react'
 import './timeslot.css'
 
 function TimeSlot() {
-
   const [times, setTimes] = useState([])
-  const [dayPage, setDayPage] = useState(false)
+  const [currentPage, setCurrentPage] = useState(0)
+  const [itemsPerPage, setItemsPerPage] = useState(3)
+  const [chunkedDates, setChunkedDates] = useState([])
 
   const genTimes = (daySlots) => {
     setTimes([
@@ -29,7 +30,7 @@ function TimeSlot() {
     date.setDate(date.getDate() + days);
     const formatted = date.toLocaleDateString('en-GB', options);
     return formatted
-}
+  }
 
   const [dates, setDates] = useState([
     {date: 'Today', slots: 0, selected: false, id: 0},
@@ -39,6 +40,34 @@ function TimeSlot() {
     {date: getDate(4), slots: 8, selected: false, id: 4},
     {date: getDate(5), slots: 8, selected: false, id: 5},
   ])
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 550) {
+        setItemsPerPage(1)
+      } else if (window.innerWidth < 768) {
+        setItemsPerPage(2)
+      } else {
+        setItemsPerPage(3)
+      }
+    }
+
+    handleResize()
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
+
+  useEffect(() => {
+    const chunks = []
+    for (let i = 0; i < dates.length; i += itemsPerPage) {
+      chunks.push(dates.slice(i, i + itemsPerPage))
+    }
+    setChunkedDates(chunks)
+    // Only reset page when itemsPerPage changes, not when dates change
+    if (chunks.length <= currentPage) {
+      setCurrentPage(0)
+    }
+  }, [dates, itemsPerPage, currentPage])
 
   const handleClick = (time) => {
     const clickedArr = times.map(item => {
@@ -55,34 +84,28 @@ function TimeSlot() {
     genTimes(day.slots);
   }
 
-  const handlePage = () => {
-    setDayPage(!dayPage)
+  const handlePrevPage = () => {
+    setCurrentPage(prev => (prev > 0 ? prev - 1 : chunkedDates.length - 1))
   }
 
-  
+  const handleNextPage = () => {
+    setCurrentPage(prev => (prev < chunkedDates.length - 1 ? prev + 1 : 0))
+  }
 
   return (
     <div className='time-slot-wrapper'>
       <div className='time-slot-days'>
         <div className='time-slot-days-inner'>
-          <button onClick={handlePage}>BACK</button>
-          <div className={`time-slot-day-1 ${dayPage ? 'hide' : ''}`}>
-            {dates.slice(0, 3).map(day => (
-              <div className={`time-slot-card ${day.selected ? 'active' : ''}`} onClick={() => handleCardClick(day)}>
+          <button onClick={handlePrevPage} className='slider-reverse'>◄</button>
+          <div className='time-slot-days-container'>
+            {chunkedDates[currentPage]?.map(day => (
+              <div key={day.id} className={`time-slot-card ${day.selected ? 'active' : ''}`} onClick={() => handleCardClick(day)}>
                 <h4>{day.date}</h4>
                 <p>{day.slots ? `${day.slots} slots available` : 'No slots available'}</p>
               </div>
             ))}
           </div>
-          <div className={`time-slot-day-2 ${dayPage ? 'active' : ''}`}>
-            {dates.slice(3, 6).map(day => (
-              <div className={`time-slot-card ${day.selected ? 'active' : ''}`} onClick={() => handleCardClick(day)}>
-                <h4>{day.date}</h4>
-                <p>{day.slots ? `${day.slots} slots available` : 'No slots available'}</p>
-              </div>
-            ))}
-          </div>
-          <button onClick={handlePage}>FORWARD</button>
+          <button onClick={handleNextPage} className='slider-forward'>►</button>
         </div>
       </div>
       <div className='time-slot-times'>

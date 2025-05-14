@@ -80,7 +80,7 @@
     overflow: hidden;
 }
 
-.time-slot-day-1, .time-slot-day-2 {
+.time-slot-days-container {
     width: 100%;
     display: grid;
     gap: 1rem;
@@ -89,19 +89,16 @@
     transition: transform 0.3s ease;
 }
 
-.time-slot-day-1.hide {
-    position: absolute;
-    transform: translateX(100%);
+@media (max-width: 767px) {
+    .time-slot-days-container {
+        grid-template-columns: repeat(2, auto);
+    } 
 }
 
-.time-slot-day-2 {
-    position: absolute;
-    transform: translateX(100%);
-}
-
-.time-slot-day-2.active {
-    position: static;
-    transform: translateX(0);
+@media (max-width: 549px) {
+    .time-slot-days-container {
+        grid-template-columns: repeat(1, auto);
+    } 
 }
 
 .time-slot-card.active {
@@ -110,4 +107,8 @@
 
 .time-slot-card.active p {
     border-bottom: 2px solid #64BC6E;
+}
+
+.slider-reverse, .slider-forward {
+    font-size: 2rem;
 }
